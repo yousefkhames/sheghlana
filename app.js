@@ -269,6 +269,7 @@ function vSettings() {
 }
 function download(name, text, type) { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type })); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500); }
 function sample() {
+  if (S.jobs.some((j) => j.id === 'j1') || S.team.some((w) => w.id === 'w1')) { toast(S.lang === 'ar' ? 'البيانات التجريبية موجودة بالفعل' : 'Sample data is already loaded'); return; }
   const td = todayStr(); const w = [{ id: 'w1', name: S.lang === 'ar' ? 'أسطى محمود' : 'Mahmoud', role: S.lang === 'ar' ? 'سباك' : 'Plumber', phone: '01000000001', dayRate: 400, color: COLORS[0] }, { id: 'w2', name: S.lang === 'ar' ? 'رضا' : 'Reda', role: S.lang === 'ar' ? 'كهربائي' : 'Electrician', phone: '01000000002', dayRate: 450, color: COLORS[1] }, { id: 'w3', name: S.lang === 'ar' ? 'سيد' : 'Sayed', role: S.lang === 'ar' ? 'نقاش' : 'Painter', phone: '01000000003', dayRate: 350, color: COLORS[2] }];
   const c = [{ id: 'c1', name: S.lang === 'ar' ? 'مدام منى' : 'Mona Saleh', phone: '01100000001', address: S.lang === 'ar' ? 'سموحة، الإسكندرية' : 'Smouha, Alexandria' }, { id: 'c2', name: S.lang === 'ar' ? 'مطعم الفرن' : 'El Forn Restaurant', phone: '01200000002', address: S.lang === 'ar' ? 'سيدي جابر' : 'Sidi Gaber' }];
   const A = S.lang === 'ar';
