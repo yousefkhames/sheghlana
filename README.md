@@ -7,6 +7,15 @@ Plumbers, electricians, painters, carpenters, AC techs. Arabic and English, righ
 
 <p align="center"><a href="https://yousefkhames.github.io/sheghlana/"><b>Open the live demo</b></a></p>
 
+## Screenshots
+
+Captured from the live site (https://yousefkhames.github.io/sheghlana/).
+
+<p>
+  <img src="docs/screenshots/live-desktop.png" alt="sheghlana desktop view" width="640">
+  <img src="docs/screenshots/live-mobile.png" alt="sheghlana mobile view" width="200">
+</p>
+
 ## The problem
 
 A tradesman runs the business from WhatsApp, a notebook and memory. Who is on which job today? Did we buy the pipes? What did we quote Mrs. Mona? Who still owes money? Sheghlana puts those answers on one screen.
