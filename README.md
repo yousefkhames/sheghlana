@@ -70,3 +70,13 @@ Open `index.html`, or serve the folder with any static server (`python3 -m http.
 ## License
 
 MIT, see [LICENSE](LICENSE).
+
+## Demo / portfolio project
+
+Static GitHub Pages site. Data stays in your browser (localStorage). There is no backend, no sync between devices and no payment. Invoices and estimates are demo documents, not a certified invoicing or tax system. "Send on WhatsApp" opens a draft; you send it yourself.
+
+By Yousef Khames · من تطوير يوسف خميس
+
+## Review notes (AUDIT.md)
+
+See [AUDIT.md](AUDIT.md) for findings, fixes and remaining risks. Run `node tests/logic.test.js` (20 tests).

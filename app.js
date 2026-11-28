@@ -46,6 +46,7 @@ function render() {
   $('#app').innerHTML = `<header class="top"><div class="logo"><svg viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#1d1b19"/><path d="M0 50h64v14H0z" fill="#ff6b1a"/><path d="M8 50h10l-6 14H2zM28 50h10l-6 14H22zM48 50h10l-6 14H42z" fill="#1d1b19"/><path d="M22 14c8-4 18 0 18 7 0 9-18 4-18 13 0 5 6 7 14 5" fill="none" stroke="#f3efe6" stroke-width="6" stroke-linecap="round"/></svg><div>${esc(S.biz.name || t('app'))}<small>${esc(t('tag'))}</small></div></div><span class="sp"></span><button class="chip" data-act="lang" aria-label="Language">${S.lang === 'ar' ? 'EN' : 'عربي'}</button></header>
   <main class="wrap">${body}</main>
   ${(V.tab === 'schedule' || V.tab === 'jobs') ? `<button class="btn fab" data-act="newJob" aria-label="${esc(t('addJob'))}">+</button>` : ''}
+  <footer class="yk"><img src="assets/yk-logo.svg" width="20" height="20" alt=""><span>${S.lang === 'ar' ? 'من تطوير يوسف خميس' : 'By Yousef Khames'}</span><small>${S.lang === 'ar' ? 'مشروع تجريبي: ليس نظام فواتير معتمد.' : 'Demo project, not a certified invoicing system.'}</small></footer>
   <nav class="nav" aria-label="Main">${tabs.map(([k, i]) => `<button data-act="tab" data-v="${k}" class="${V.tab === k ? 'on' : ''}" aria-label="${esc(t(k))}" ${V.tab === k ? 'aria-current="page"' : ''}>${IC[i]}<span>${esc(t(k))}</span></button>`).join('')}</nav>`;
 }
 
@@ -103,7 +104,7 @@ function jobForm(j) {
   <div class="tot" id="jtot"></div>
   <label for="f-notes">${esc(t('notes'))}</label><textarea id="f-notes">${esc(draft.notes)}</textarea>
   <div class="row" style="margin-top:14px"><button class="btn" data-m="save">${esc(t('save'))}</button>${isNew ? '' : `<button class="btn sec" data-m="mkDoc" data-type="estimate">${esc(t('mkEstimate'))}</button><button class="btn sec" data-m="mkDoc" data-type="invoice">${esc(t('mkInvoice'))}</button>`}</div>
-  ${isNew ? '' : `<div class="row" style="margin-top:10px">${clientOf(draft.clientId) && clientOf(draft.clientId).phone ? `<a class="btn sm sec" href="tel:${esc(clientOf(draft.clientId).phone)}">${esc(t('call'))}</a>` : ''}${draft.address ? `<a class="btn sm sec" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(draft.address)}">${esc(t('map'))}</a>` : ''}<span class="sp"></span><button class="btn sm bad" data-m="del">${esc(t('delete'))}</button></div>`}`;
+  ${isNew ? '' : `<div class="row" style="margin-top:10px">${clientOf(draft.clientId) && L.safePhone(clientOf(draft.clientId).phone) ? `<a class="btn sm sec" href="tel:${esc(L.safePhone(clientOf(draft.clientId).phone))}">${esc(t('call'))}</a>` : ''}${draft.address ? `<a class="btn sm sec" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(draft.address)}">${esc(t('map'))}</a>` : ''}<span class="sp"></span><button class="btn sm bad" data-m="del">${esc(t('delete'))}</button></div>`}`;
   const sheet = openSheet(html(), (e, el) => {
     const m = e.target.closest('[data-m]'); if (!m) return; const a = m.dataset.m;
     if (a === 'close') closeSheet();
@@ -204,7 +205,7 @@ function openDoc(id) {
     else if (a === 'addPay') { sync(); const v = num($('#p-amt', el).value); if (v <= 0) return; d.payments.push({ id: uid(), amount: v, date: todayStr() }); $('#p-amt', el).value = ''; drawPays(); refresh(); toast(t('pay')); }
     else if (a === 'rmPay') { sync(); d.payments.splice(+m.dataset.i, 1); drawPays(); refresh(); }
     else if (a === 'save') { commit(); closeSheet(); toast(t('saved')); }
-    else if (a === 'toInv') { commit(); const ni = L.estimateToInvoice(d, S.docs, todayStr(), 7); $('#d-status', el).value = 'accepted'; commit(); S.docs.push(ni); save(); V.docTab = 'invoice'; closeSheet(); render(); openDoc(ni.id); toast(t('invMade')); }
+    else if (a === 'toInv') { commit(); const dup = L.invoiceFor(d, S.docs); if (dup) { closeSheet(); V.docTab = 'invoice'; render(); openDoc(dup.id); return; } const ni = L.estimateToInvoice(d, S.docs, todayStr(), 7); $('#d-status', el).value = 'accepted'; commit(); S.docs.push(ni); save(); V.docTab = 'invoice'; closeSheet(); render(); openDoc(ni.id); toast(t('invMade')); }
     else if (a === 'print') { commit(); printDoc(d); }
     else if (a === 'wa') { sync(); const c = clientOf(d.clientId); const tt = L.docTotals(d); const txt = `${S.biz.name || t('app')}\n${inv ? t('invoice') : t('estimate')} ${d.number}\n` + d.items.map((i) => `• ${i.desc} × ${i.qty} = ${M(L.lineTotal(i))}`).join('\n') + `\n${t('total')}: ${M(tt.total)}` + (inv && tt.paid ? `\n${t('due')}: ${M(tt.due)}` : ''); const ph = c && c.phone ? c.phone.replace(/\D/g, '').replace(/^0/, '20') : ''; window.open('https://wa.me/' + ph + '?text=' + encodeURIComponent(txt), '_blank', 'noopener'); }
     else if (a === 'del') { if (confirm(t('confirmDel'))) { S.docs = S.docs.filter((x) => x.id !== d.id); save(); closeSheet(); toast(t('deleted')); } }

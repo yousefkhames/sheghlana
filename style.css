@@ -105,3 +105,5 @@ input:focus,select:focus,textarea:focus{border-color:var(--ink)}
 .stats{grid-template-columns:repeat(3,1fr)}.stat b{font-size:17px}.stat span{font-size:11px}
 .day{min-width:44px}
 @media(min-width:760px){.stat b{font-size:22px}}
+
+.yk{display:flex;flex-wrap:wrap;align-items:center;gap:8px;justify-content:center;padding:14px 12px 90px;font-size:13px;opacity:.85}.yk small{flex-basis:100%;text-align:center;opacity:.8}

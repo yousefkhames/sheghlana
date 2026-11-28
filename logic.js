@@ -2,7 +2,14 @@
 (function (root) {
   'use strict';
   const round2 = (n) => Math.round((Number(n) + Number.EPSILON) * 100) / 100;
-  const num = (v) => { const n = parseFloat(String(v).replace(',', '.')); return isFinite(n) ? n : 0; };
+  /* Parse a user number. Accepts Arabic-Indic and Persian digits and the Arabic decimal mark. Negative or invalid input is 0. */
+  const AR = '٠١٢٣٤٥٦٧٨٩', FA = '۰۱۲۳۴۵۶۷۸۹';
+  const num = (v) => {
+    const t = String(v == null ? '' : v).replace(/[٠-٩۰-۹]/g, (c) => { const i = AR.indexOf(c); return i >= 0 ? i : FA.indexOf(c); }).replace(/[٫,]/g, '.').replace(/[٬\s]/g, '');
+    const n = parseFloat(t); return isFinite(n) && n > 0 ? n : 0;
+  };
+  function safePhone(v) { const s = String(v == null ? '' : v).trim(); return /^\+?[\d\s()-]{5,20}$/.test(s) ? s.replace(/[^\d+]/g, '') : ''; }
+  function invoiceFor(est, docs) { return (docs || []).find((d) => d.type === 'invoice' && d.fromEstimate && d.fromEstimate === est.number) || null; }
 
   function lineTotal(it) { return round2(num(it.qty) * num(it.price)); }
   function docTotals(doc) {
@@ -92,8 +99,8 @@
     return s + ' ' + (lang === 'ar' && cur === 'EGP' ? 'ج.م' : cur);
   }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
-  function csv(rows) { return rows.map((r) => r.map((c) => { const s = String(c == null ? '' : c); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }).join(',')).join('\n'); }
+  function csv(rows) { return rows.map((r) => r.map((c) => { let s = String(c == null ? '' : c); if (/^[\s]*[=+\-@\t\r]/.test(s) && isNaN(Number(s))) s = "'" + s; return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }).join(',')).join('\n'); }
 
-  const api = { round2, num, lineTotal, docTotals, jobMaterialCost, jobMaterialPrice, jobLabor, jobProfit, itemsFromJob, nextNumber, estimateToInvoice, addDays, weekStart, ymd, parseYmd, invoiceStatus, conflicts, shoppingList, money, esc, csv, toMin };
+  const api = { round2, num, lineTotal, docTotals, jobMaterialCost, jobMaterialPrice, jobLabor, jobProfit, itemsFromJob, nextNumber, estimateToInvoice, safePhone, invoiceFor, addDays, weekStart, ymd, parseYmd, invoiceStatus, conflicts, shoppingList, money, esc, csv, toMin };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.SG = api;
 })(typeof window !== 'undefined' ? window : globalThis);
