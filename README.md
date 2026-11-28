@@ -1,3 +1,21 @@
+<div align="center">
+
+<img src="assets/yk-logo.svg" width="64" alt="YK">
+
+# sheghlana
+
+**sheghlana** · demo / portfolio project
+
+**جدولة شغل وعروض أسعار** · مشروع تجريبي للعرض
+
+[Live demo](https://yousefkhames.github.io/sheghlana/) · By Yousef Khames · من تطوير يوسف خميس
+
+<img src="assets/og.png" width="640" alt="sheghlana preview">
+
+</div>
+
+---
+
 # sheghlana · شغلانة
 
 A white-label job, estimate and invoice tracker for tradespeople: plumbers, electricians, painters and AC technicians. Clients, jobs with status, a day list, estimate and invoice builder with print or PDF and a WhatsApp draft, notes and checklist, a manual "payment received" mark, and CSV and JSON export. Arabic RTL and English LTR. Static HTML, CSS and JavaScript. No build, account, server or payment processor.
