@@ -1,1 +1,13 @@
-{"name":"sheghlana","version":"1.0.0","private":true,"scripts":{"test":"node tests/logic.test.js"},"license":"MIT"}
+{
+  "name": "sheghlana",
+  "version": "1.0.0",
+  "description": "White-label job, estimate and invoice tracker for tradespeople. Static, client-side, Arabic and English.",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/core.test.js tests/review.test.js && node tests/e2e.test.js",
+    "test:unit": "node --test tests/core.test.js tests/review.test.js",
+    "test:e2e": "node tests/e2e.test.js",
+    "serve": "node -e \"require('./tests/cdp.js').serve(8080).then(()=>console.log('http://localhost:8080'))\""
+  }
+}

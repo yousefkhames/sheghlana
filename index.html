@@ -2,22 +2,27 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>شغلانة | Sheghlana</title>
-<meta name="description" content="Job scheduling, materials, crew and estimate-to-invoice for tradesmen. جدولة الشغل والخامات والعمال وتحويل عرض السعر لفاتورة.">
-<meta name="theme-color" content="#1d1b19">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>sheghlana | شغلانة</title>
+<meta name="description" content="sheghlana: white-label job tracker for plumbers, electricians, painters and AC technicians. Clients, jobs, estimates, invoices. Static, data stays in the browser.">
+<meta name="theme-color" content="#F8FAFC">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div class="tape" aria-hidden="true"></div>
+<a class="skip" href="#main-content">انتقل للمحتوى / Skip to content</a>
 <div id="app"></div>
-<div id="modalRoot"></div>
 <div id="toast" role="status" aria-live="polite"></div>
-<div id="printArea"></div>
-<script src="logic.js"></script>
-<script src="i18n.js"></script>
-<script src="app.js"></script>
+<noscript>sheghlana needs JavaScript. / يحتاج جافاسكريبت.</noscript>
+<script defer src="assets/kit-theme.js"></script>
+<script defer src="assets/qrcode.js"></script>
+<script defer src="kit-base.js"></script>
+<script defer src="config.js"></script>
+<script defer src="core.js"></script>
+<script defer src="i18n.js"></script>
+<script defer src="app.js"></script>
 </body>
 </html>

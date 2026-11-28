@@ -1,82 +1,54 @@
-<p align="center"><img src="icon.svg" width="96" alt="Sheghlana logo"></p>
+# sheghlana · شغلانة
 
-<h1 align="center">Sheghlana | شغلانة</h1>
+A white-label job, estimate and invoice tracker for tradespeople: plumbers, electricians, painters and AC technicians. Clients, jobs with status, a day list, estimate and invoice builder with print or PDF and a WhatsApp draft, notes and checklist, a manual "payment received" mark, and CSV and JSON export. Arabic RTL and English LTR. Static HTML, CSS and JavaScript. No build, account, server or payment processor.
 
-<p align="center"><b>A job book for tradesmen: schedule the work, track materials, assign the crew, and turn an estimate into an invoice.</b><br>
-Plumbers, electricians, painters, carpenters, AC techs. Arabic and English, right-to-left, built for a phone.</p>
+<div lang="ar" dir="rtl">متابعة الشغل وعروض الأسعار والفواتير للصنايعية. البيانات تبقى في متصفحك فقط. بدون سيرفر وبدون دفع داخل التطبيق.</div>
 
-<p align="center"><a href="https://yousefkhames.github.io/sheghlana/"><b>Open the live demo</b></a></p>
-
-## Screenshots
-
-Captured from the live site (https://yousefkhames.github.io/sheghlana/).
-
-<p>
-  <img src="docs/screenshots/live-desktop.png" alt="sheghlana desktop view" width="640">
-  <img src="docs/screenshots/live-mobile.png" alt="sheghlana mobile view" width="200">
-</p>
-
-## The problem
-
-A tradesman runs the business from WhatsApp, a notebook and memory. Who is on which job today? Did we buy the pipes? What did we quote Mrs. Mona? Who still owes money? Sheghlana puts those answers on one screen.
-
-## Screenshots
-
-| Schedule (Arabic, RTL) | Estimate (English) | Papers (Arabic) |
-|---|---|---|
-| <img src="docs/schedule-ar.png" width="240"> | <img src="docs/estimate-en.png" width="240"> | <img src="docs/papers-ar.png" width="240"> |
-
-<img src="docs/desktop.png" alt="Desktop view">
+<img src="assets/yk-logo.svg" width="24" height="24" alt=""> **By Yousef Khames · من تطوير يوسف خميس**
 
 ## Features
 
-- **Week schedule**: pick a day, see the jobs, see who is on each one. Week starts on Saturday by default.
-- **Jobs**: client, address, time, duration, status, crew, labor hours and rate, notes. One tap to call the client or open the address in a map.
-- **Double-booking warning** when a worker is already on another job at an overlapping time.
-- **Materials per job** with your cost and your sell price, a bought checkbox, and a quick pick from your own catalog. Live revenue, cost and profit per job.
-- **Weekly shopping list**: all materials you still need to buy for the week, merged across jobs.
-- **Estimates and invoices**: build them from a job in one tap (materials plus a labor line), add a discount (percent or fixed) and tax, and print or save as PDF.
-- **Estimate to invoice**: one button copies the estimate into a numbered invoice (INV-0001, ...) and marks the estimate accepted.
-- **Payments**: record part payments, see the balance, and see overdue invoices.
-- **Send on WhatsApp**: opens WhatsApp with the quote or invoice as a text message.
-- **Crew, clients, catalog**, backup and restore as JSON, invoices export as CSV.
-- Arabic (Egyptian) and English, RTL and LTR, installable as a home-screen app, works offline after the first visit.
+- Jobs: lead, estimate sent, scheduled, done, received. Filter by status. Notes, checklist, date and time.
+- Day view: jobs for a chosen date, sorted by time.
+- Estimate and invoice from line items (labour and materials). Print or save as PDF through the browser print dialog. WhatsApp draft with the number and total (the app only opens a draft).
+- Numbering: prefix and next number are set in Settings. No legal format is assumed. A number is fixed once issued and never reused.
+- Tax rate is set by the owner, default 0. It is copied onto the job when a document is issued, so later changes do not rewrite old documents.
+- "Mark payment received" is a manual note (method and note). Nothing is paid or processed in the app.
+- Totals (invoiced, received, outstanding) are computed from recorded invoices only; "No invoices recorded yet" is shown until one exists.
+- CSV export of jobs (formula cells are neutralised), JSON backup and restore.
 
-## Tech
+## Preview locally
 
-Plain HTML, CSS and JavaScript. No framework, no build step, no server, no tracking. The business logic (totals, tax, discounts, numbering, conflicts, shopping list) lives in `logic.js` as pure functions with unit tests. Data is stored in your browser's `localStorage`.
+```sh
+python3 -m http.server 8080 --bind 127.0.0.1
+```
+
+Opens with fictional demo clients and jobs, labelled Demo. Settings → "Clear demo data" empties the app. Screenshots in `docs/` use demo data only.
+
+## Configure
+
+`config.js`: `demo: false` starts empty. Business name, phone, currency, tax and numbering are in Settings. Theme in `assets/kit-theme.js`. Keep `assets/yk-logo.svg` and `assets/favicon.svg`.
+
+## Deploy (GitHub Pages)
+
+Create `yousefkhames/sheghlana`, commit to `main`, Settings → Pages → Deploy from a branch → `main` / root. Live at `https://yousefkhames.github.io/sheghlana/`.
 
 ## Tests
 
+```sh
+npm test   # unit + review gates + headless Chrome e2e (Node 20+)
 ```
-node tests/logic.test.js          # 13 unit tests for the logic
-NODE_PATH=<puppeteer-core> node tests/e2e.js <url>   # 21 click-through checks in real Chrome
-```
-
-The click-through test adds a worker, client and catalog item, books a job, checks the totals, triggers the double-booking warning, creates an estimate, adds tax, converts it to an invoice, records a payment, reloads to check persistence, opens the shopping list and print view, flips to Arabic and checks RTL and mobile overflow.
 
 ## Honest limits
 
-- This is a demo hosted on GitHub Pages, not a production service.
-- Data lives in one browser on one device. There is no account, no sync between phone and laptop, and clearing browser data erases it. Use the backup export.
-- There is no login, so do not treat it as secure storage for sensitive client data.
-- WhatsApp sending opens WhatsApp with a ready message. It does not send automatically.
-- Invoice numbers and tax follow the simple settings here. It is not a tax-authority e-invoice and does not replace an accountant.
-
-## Run it
-
-Open `index.html`, or serve the folder with any static server (`python3 -m http.server`).
+- **Data lives in this browser on this device.** No sync, no accounts. Clearing site data erases it. Export a backup often.
+- **Documents are not tax-authority documents.** They are not Egyptian e-invoices or e-receipts, and no tax registration data is included. They carry a line saying so.
+- No payments in the app. The "received" mark is only what you type.
+- **No photo attachments in this version.** Local photo storage can fill the browser storage quickly and lose data; add it only with an export plan.
+- Prices and quantities are what you type; nothing is estimated for you.
 
 ## License
 
-MIT, see [LICENSE](LICENSE).
+MIT, copyright Yousef Khames. See `LICENSE`. Cairo font: SIL OFL. `assets/qrcode.js`: qrcode-generator by Kazuhiko Arase (MIT).
 
-## Demo / portfolio project
-
-Static GitHub Pages site. Data stays in your browser (localStorage). There is no backend, no sync between devices and no payment. Invoices and estimates are demo documents, not a certified invoicing or tax system. "Send on WhatsApp" opens a draft; you send it yourself.
-
-By Yousef Khames · من تطوير يوسف خميس
-
-## Review notes (AUDIT.md)
-
-See [AUDIT.md](AUDIT.md) for findings, fixes and remaining risks. Run `node tests/logic.test.js` (20 tests).
+> Demo / portfolio project. Static GitHub Pages site with fictional sample data, not a certified invoicing system.
